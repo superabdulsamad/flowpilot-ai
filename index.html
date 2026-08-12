@@ -1,0 +1,584 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FlowPilot AI Command Center</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/src/styles/main.css">
+</head>
+<body>
+
+<div class="sync-bar"><div class="sync-bar-fill" id="syncBarFill"></div></div>
+<div class="sync-indicator" id="syncIndicator"></div>
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loading-spinner"></div>
+  <div class="loading-text">Connecting to FlowPilot AI database...</div>
+</div>
+
+<div class="login-screen" id="loginScreen" style="display:none">
+  <div class="login-split">
+    <div class="login-hero">
+      <div class="login-hero-kicker">FlowPilot · status nominal</div>
+      <div class="login-hero-title">Your team's<br><span>flight deck</span></div>
+      <p class="login-hero-desc">Tasks, time tracking, daily checklists, and adhoc work — synced live for the whole crew.</p>
+      <div class="login-hero-features">
+        <div class="login-hero-feat">Multi-course task boards &amp; kanban — online</div>
+        <div class="login-hero-feat">Clock-in, attendance &amp; team view — online</div>
+        <div class="login-hero-feat">Intern portal — self-signup &amp; own dashboard</div>
+        <div class="login-hero-feat">FlowPilot AI briefings &amp; smart alerts</div>
+      </div>
+    </div>
+    <div class="login-pane">
+      <div class="login-card">
+        <div class="login-logo">FlowPilot<span> AI</span></div>
+        <div class="login-sub">Sign in to continue</div>
+        <div class="login-seg">
+          <button type="button" class="login-seg-btn active" id="segTeam" onclick="switchLoginTab('team')">Team Login</button>
+          <button type="button" class="login-seg-btn" id="segIntern" onclick="switchLoginTab('intern')">Intern Login</button>
+        </div>
+        <div id="teamBox">
+          <input class="login-input" id="loginUser" placeholder="Username" autofocus onkeydown="if(event.key==='Enter')doLogin()">
+          <input class="login-input" id="loginPass" type="password" placeholder="Password" onkeydown="if(event.key==='Enter')doLogin()">
+          <button class="login-btn" id="loginBtn" onclick="doLogin()">Sign In</button>
+          <div class="login-error" id="loginError">Invalid username or password</div>
+          <div class="login-footer"></div>
+        </div>
+        <div id="internBox" style="display:none">
+          <div class="intern-portal-label">🎓 Intern Portal</div>
+          <input class="login-input" id="internLoginUser" placeholder="Intern Username" onkeydown="if(event.key==='Enter')internDoLogin()">
+          <input class="login-input" id="internLoginPass" type="password" placeholder="Password" onkeydown="if(event.key==='Enter')internDoLogin()">
+          <button class="login-btn" id="internLoginBtn" style="background:var(--purple)" onclick="internDoLogin()">Intern Sign In</button>
+          <div class="login-error" id="internLoginError">Invalid intern credentials</div>
+          <div class="login-footer" style="margin-top:12px;border-top:1px solid var(--border);padding-top:12px">New intern? <a href="#" class="intern-signup-link" onclick="openInternSignup();return false">Create an account →</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="app-wrap" id="appWrap">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-left">
+      <div class="logo">FlowPilot<span> AI</span></div>
+      <div class="header-toolbar" id="headerToolbar">
+        <button type="button" class="header-tool-btn" id="sidebarToggleBtn" onclick="toggleSidebar()" title="Toggle sections sidebar">☰ Sections</button>
+        <button type="button" class="header-tool-btn" onclick="openCmdPalette()" title="Jump to module (Ctrl+K)"><span class="header-tool-kbd">⌘K</span> Jump</button>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="course-switcher" id="courseSwitcher">
+        <select class="course-select" id="courseSel" onchange="switchCourse(this.value)"></select>
+        <button class="cs-btn admin-only" onclick="openCourseModal()">+ Course</button>
+        <button class="cs-btn admin-only" onclick="duplicateCourse()">⧉ Clone</button>
+        <button class="cs-btn danger admin-only" onclick="deleteCourse()">✕</button>
+      </div>
+      <button class="add-task-btn" id="addTaskBtn" onclick="openAddTask()">+ Add Task</button>
+      <button class="cs-btn admin-only" onclick="openUserMgmt()">👥 Users</button>
+      <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()">🌙</button>
+      <span class="user-badge" id="userBadge"></span>
+      <button class="logout-btn" onclick="doLogout()">Logout</button>
+    </div>
+  </div>
+
+  <!-- APP LEVEL TABS -->
+  <div class="app-tabs">
+    <button class="app-tab active" id="appTabTasks" onclick="switchAppTab('tasks')">📋 Tasks <span class="tab-badge" id="badgeTasks"></span></button>
+    <button class="app-tab" id="appTabTime" onclick="switchAppTab('time')">⏱ Time</button>
+    <button class="app-tab" id="appTabDaily" onclick="switchAppTab('daily')">📅 Daily <span class="tab-badge" id="badgeDaily"></span></button>
+    <button class="app-tab" id="appTabAdhoc" onclick="switchAppTab('adhoc')">🎯 Adhoc <span class="tab-badge" id="badgeAdhoc"></span></button>
+    <button class="app-tab" id="appTabWeekly" onclick="switchAppTab('weekly')">🗓 Weekly Tasks</button>
+    <button class="app-tab" id="appTabRoles" onclick="switchAppTab('roles')">🧩 Roles &amp; Responsibilities</button>
+    <button class="app-tab" id="appTabTools" onclick="switchAppTab('tools')">🧪 Tool Testing</button>
+    <button class="app-tab admin-only" id="appTabInterns" onclick="switchAppTab('interns')">🎓 Interns</button>
+    <button class="app-tab" id="appTabSales" onclick="switchAppTab('sales')">📈 Sales Forecast</button>
+  </div>
+
+  <!-- ═══════════════════ TASK MANAGEMENT PANEL ═══════════════════ -->
+  <div class="app-tab-panel active" id="panelTasks">
+    <div class="sidebar-backdrop" onclick="closeMobileSidebar()"></div>
+    <div class="layout">
+      <div class="sidebar">
+        <div class="sidebar-label">Sections</div>
+        <div class="nav-item active" onclick="filterSection('all',this)"><div class="nav-dot" style="background:var(--blue)"></div> All Tasks</div>
+        <div class="nav-item" onclick="filterSection('pre-launch',this)"><div class="nav-dot" style="background:var(--brand)"></div> Pre Launch</div>
+        <div class="nav-item" onclick="filterSection('sales',this)"><div class="nav-dot" style="background:var(--blue)"></div> Sales Assets</div>
+        <div class="nav-item" onclick="filterSection('masterclass',this)"><div class="nav-dot" style="background:var(--purple)"></div> Masterclass</div>
+        <div class="nav-item" onclick="filterSection('one-on-one',this)"><div class="nav-dot" style="background:var(--red)"></div> One on One</div>
+        <div class="nav-item" onclick="filterSection('batch',this)"><div class="nav-dot" style="background:var(--red)"></div> Batch Mgmt</div>
+        <div class="sidebar-divider"></div>
+        <div class="sidebar-label" style="display:flex;align-items:center;justify-content:space-between">Team <span style="display:flex;gap:3px"><button class="cs-btn" style="padding:2px 6px;font-size:10px" onclick="openTeamModal()">+</button><button class="cs-btn danger" style="padding:2px 6px;font-size:10px" onclick="openRemoveTeamModal()">−</button></span></div>
+        <div class="member-list" id="memberList"></div>
+      </div>
+      <div class="main">
+        <div class="stats-row" id="statsRow"></div>
+        <div class="progress-section">
+          <div class="progress-header"><div class="progress-title" id="progressTitle">Launch Progress</div><div class="progress-pct" id="progressPct">0%</div></div>
+          <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressBar" style="width:0%"></div></div>
+          <div class="phase-pills" id="phasePills"></div>
+        </div>
+        <div class="filter-bar">
+          <input class="search-box" id="searchBox" placeholder="Search tasks..." oninput="applyFilters()">
+          <select class="filter-select" id="statusFilter" onchange="applyFilters()"><option value="all">All Statuses</option><option value="Done">Done</option><option value="WIP">WIP</option><option value="Pending">Pending</option><option value="HOLD">Hold</option></select>
+          <select class="filter-select" id="assigneeFilter" onchange="applyFilters()"><option value="all">All Assignees</option></select>
+          <select class="filter-select" id="priorityFilter" onchange="applyFilters()"><option value="all">All Priorities</option><option value="High">High</option><option value="Medium">Medium</option><option value="Low">Low</option></select>
+          <button class="export-btn" onclick="exportExcel()">📥 Export</button>
+          <div class="view-toggle">
+            <button class="view-btn active" id="btnTable" onclick="setView('table')">List</button>
+            <button class="view-btn" id="btnKanban" onclick="setView('kanban')">Board</button>
+            <button class="view-btn" id="btnTimeline" onclick="setView('timeline')">Timeline</button>
+            <button class="view-btn" id="btnCalendar" onclick="setView('calendar')">Calendar</button>
+          </div>
+        </div>
+        <div id="tableView"></div>
+        <div id="kanbanView" class="kanban-view"></div>
+        <div id="timelineView" class="timeline-view"></div>
+        <div id="calendarView" class="calendar-view"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ TIME MANAGEMENT PANEL ═══════════════════ -->
+  <div class="app-tab-panel" id="panelTime">
+    <div class="tm-main">
+
+      <!-- CLOCK IN HERO -->
+      <div class="clock-hero">
+        <div class="clock-main">
+          <div class="clock-greeting" id="tmGreeting">Good morning,</div>
+          <div class="clock-name" id="tmHeroName">Welcome</div>
+          <div class="clock-time-display" id="tmElapsed">00:00:00</div>
+          <div class="clock-date-str" id="tmDateStr"></div>
+          <div class="clock-actions">
+            <button class="btn-clockin" id="btnClockIn" onclick="tmClockIn()">▶ Clock In</button>
+            <button class="btn-clockout" id="btnClockOut" onclick="tmClockOut()" style="display:none">■ Clock Out</button>
+            <button class="btn-break" id="btnBreak" onclick="tmToggleBreak()" style="display:none">☕ Break</button>
+          </div>
+        </div>
+        <div class="tm-status-panel">
+          <div class="tm-status-title"><span class="live-dot"></span>Today's Status</div>
+          <div class="tm-status-item"><span class="tm-sl">Status</span><span class="tm-badge tb-not" id="tmStatusBadge">Not Started</span></div>
+          <div class="tm-status-item"><span class="tm-sl">Clock In</span><span class="tm-sv" id="tmClockInVal">—</span></div>
+          <div class="tm-status-item"><span class="tm-sl">Clock Out</span><span class="tm-sv" id="tmClockOutVal">—</span></div>
+          <div class="tm-status-item"><span class="tm-sl">Break</span><span class="tm-sv" id="tmBreakVal">—</span></div>
+          <div class="tm-status-item"><span class="tm-sl">Worked</span><span class="tm-sv" id="tmWorkedVal">—</span></div>
+          <div class="tm-progress">
+            <div class="tm-prog-label"><span>9h Target</span><span id="tmProgPct">0%</span></div>
+            <div class="tm-prog-track"><div class="tm-prog-fill" id="tmProgFill" style="width:0%"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TM STATS -->
+      <div class="tm-stats" id="tmStats"></div>
+
+      <!-- TM INNER TABS -->
+      <div class="tm-tabs">
+        <button class="tm-tab active" onclick="setTmTab('team',this)">👥 Team View</button>
+        <button class="tm-tab" onclick="setTmTab('history',this)">📅 My History</button>
+        <button class="tm-tab admin-only" id="tmAdminTab" onclick="setTmTab('admin',this)">⚙️ Admin</button>
+      </div>
+
+      <!-- TEAM VIEW -->
+      <div id="tmTabTeam"><div class="team-grid" id="tmTeamGrid"></div></div>
+
+      <!-- MY HISTORY -->
+      <div id="tmTabHistory" style="display:none">
+        <div class="att-table-wrap">
+          <div class="att-table-header">
+            <div class="att-table-title">My Attendance — <span style="color:var(--text3);font-weight:400" id="tmHistName"></span></div>
+            <div class="att-filters">
+              <select class="att-filter-sel" id="tmHistDays" onchange="tmRenderHistory()">
+                <option value="7">Last 7 days</option>
+                <option value="30" selected>Last 30 days</option>
+                <option value="90">Last 90 days</option>
+              </select>
+              <button class="export-btn" onclick="tmExportMy()">📥 Export</button>
+            </div>
+          </div>
+          <div id="tmHistoryBody"></div>
+        </div>
+      </div>
+
+      <!-- ADMIN -->
+      <div id="tmTabAdmin" style="display:none">
+        <div class="tm-admin-section">
+          <div class="tm-admin-title">All Team Attendance <span class="tm-admin-badge">ADMIN</span></div>
+          <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">
+            <select class="att-filter-sel" id="tmAdminMember" onchange="tmRenderAdmin()"><option value="all">All Members</option></select>
+            <select class="att-filter-sel" id="tmAdminDays" onchange="tmRenderAdmin()"><option value="7">Last 7 days</option><option value="30" selected>Last 30 days</option></select>
+            <button class="export-btn" onclick="tmExportAll()">📥 Export All</button>
+            <button class="export-btn" style="border-color:var(--brand);color:var(--brand)" onclick="tmOpenManual()">+ Manual Entry</button>
+          </div>
+          <div id="tmAdminBody"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════ DAILY TASKS PANEL ═══════════════════ -->
+  <div class="app-tab-panel" id="panelDaily">
+    <div class="dt-main">
+      <div class="dt-header-row">
+        <div class="dt-title">📅 Daily Tasks</div>
+        <div class="dt-date" id="dtDateDisplay"></div>
+        <button class="adhoc-add-btn" onclick="dtOpenModal()">+ Add Daily Task</button>
+      </div>
+      <div class="dt-stats" id="dtStats"></div>
+      <div id="dtSections"></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ ADHOC TASKS PANEL ═══════════════════ -->
+  <div class="app-tab-panel" id="panelAdhoc">
+    <div class="adhoc-main">
+
+      <!-- STATS -->
+      <div class="adhoc-stats" id="adhocStats"></div>
+
+      <!-- PROGRESS BY ASSIGNEE -->
+      <div class="adhoc-progress-section">
+        <div class="adhoc-progress-title">Adhoc Task Progress by Assignee</div>
+        <div class="assignee-progress-grid" id="adhocAssigneeGrid"></div>
+      </div>
+
+      <!-- TABLE -->
+      <div class="adhoc-table-wrap">
+        <div class="adhoc-table-header">
+          <div class="adhoc-table-title">Adhoc Tasks</div>
+          <div class="adhoc-filters">
+            <select class="adhoc-filter-sel" id="adhocAssigneeFilter" onchange="adhocRender()"><option value="all">All Assignees</option></select>
+            <select class="adhoc-filter-sel" id="adhocPriorityFilter" onchange="adhocRender()"><option value="all">All Priorities</option><option value="Urgent">Urgent</option><option value="High">High</option><option value="Medium">Medium</option><option value="Low">Low</option></select>
+            <select class="adhoc-filter-sel" id="adhocStatusFilter" onchange="adhocRender()"><option value="all">All Progress</option><option value="Pending">Pending</option><option value="In Progress">In Progress</option><option value="Completed">Completed</option><option value="Confusion">Confusion</option></select>
+            <button class="export-btn" onclick="adhocExport()">📥 Export</button>
+            <button class="adhoc-add-btn" onclick="adhocOpenModal()">+ Add New Adhoc Task</button>
+          </div>
+        </div>
+        <div style="overflow-x:auto">
+          <table class="adhoc-table">
+            <thead>
+              <tr>
+                <th>Task Name</th>
+                <th>Description</th>
+                <th>Assigned To</th>
+                <th>Priority</th>
+                <th>End Date</th>
+                <th>Days Remaining</th>
+                <th>System Status</th>
+                <th>Progress</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="adhocTableBody"></tbody>
+          </table>
+        </div>
+        <div class="adhoc-footer-note">Adhoc tasks are automatically marked as failed when the end date passes</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════ TOOL TESTING PANEL ═══════════════════ -->
+  <div class="app-tab-panel" id="panelTools">
+    <div class="adhoc-main">
+      <div class="adhoc-table-header">
+        <div class="adhoc-table-title">🧪 Tool Testing &amp; Research</div>
+        <div class="adhoc-filters">
+          <select class="adhoc-filter-sel" id="ttStatusFilter" onchange="ttRender()"><option value="all">All Status</option><option>Researching</option><option>Testing</option><option>Adopted</option><option>Rejected</option></select>
+          <select class="adhoc-filter-sel" id="ttAssigneeFilter" onchange="ttRender()"><option value="all">All Assignees</option></select>
+          <button class="adhoc-add-btn" onclick="ttOpenModal()">+ Add Tool</button>
+        </div>
+      </div>
+      <div style="font-size:12px;color:var(--text3);margin:6px 0 16px">Track tools &amp; research — what it does, where you found it (reel/video), and who's evaluating it.</div>
+      <div class="adhoc-stats" id="ttStats" style="margin-bottom:16px"></div>
+      <div class="adhoc-table-wrap"><div style="overflow-x:auto"><div id="ttTable"></div></div></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ SALES FORECAST PANEL ═══════════════════ -->
+  <div class="app-tab-panel" id="panelSales">
+    <div class="adhoc-main">
+      <div class="adhoc-table-header">
+        <div class="adhoc-table-title">📈 Sales Forecast — <span id="sfDateLabel"></span></div>
+        <div class="adhoc-filters">
+          <button onclick="sfNavMonth(-1)" title="Previous month" style="border:1px solid var(--border);background:var(--surface2);border-radius:6px;cursor:pointer;padding:6px 11px;color:var(--text);font-size:12px">◀</button>
+          <input type="month" class="adhoc-filter-sel" id="sfMonthPick" onchange="sfChangeMonth(this.value)" style="font-family:var(--mono)">
+          <button onclick="sfNavMonth(1)" title="Next month" style="border:1px solid var(--border);background:var(--surface2);border-radius:6px;cursor:pointer;padding:6px 11px;color:var(--text);font-size:12px">▶</button>
+          <select class="adhoc-filter-sel" id="sfMemberFilter" onchange="sfRender()"><option value="all">All Members</option></select>
+          <button class="adhoc-add-btn" onclick="sfOpenModal()">+ Add Forecast</button>
+        </div>
+      </div>
+      <div style="font-size:12px;color:var(--text3);margin:6px 0 16px">Select a month from the top right. Add a forecast for each day with "+ Add Forecast" — enter the forecast number in the morning and update the actual at end of day. Matched/Unmatched and the shortfall are calculated automatically.</div>
+      <div class="adhoc-stats" id="sfStats" style="margin-bottom:12px"></div>
+      <div id="sfMemberCards" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px"></div>
+      <div class="adhoc-table-wrap"><div style="overflow-x:auto"><div id="sfTable"></div></div></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ WEEKLY TASKS PANEL ═══════════════════ -->
+  <div class="app-tab-panel" id="panelWeekly">
+    <div class="adhoc-main">
+      <div class="adhoc-table-header">
+        <div class="adhoc-table-title">🗓 Weekly Tasks</div>
+        <div class="adhoc-filters">
+          <select class="adhoc-filter-sel" id="weeklyOwnerFilter" onchange="weeklyRender()"><option value="all">All Owners</option></select>
+          <select class="adhoc-filter-sel" id="weeklyStatusFilter" onchange="weeklyRender()"><option value="all">All Status</option><option>Planned</option><option>In Progress</option><option>Blocked</option><option>Done</option></select>
+          <button class="adhoc-add-btn" onclick="weeklyOpenModal()">+ Add Weekly Task</button>
+        </div>
+      </div>
+      <div style="font-size:12px;color:var(--text3);margin:6px 0 16px">Plan weekly outcomes, assign owners, and track status.</div>
+      <div class="adhoc-stats" id="weeklyStats" style="margin-bottom:16px"></div>
+      <div class="adhoc-table-wrap"><div style="overflow-x:auto"><div id="weeklyTasksWrap"></div></div></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ ROLES PANEL ═══════════════════ -->
+  <div class="app-tab-panel" id="panelRoles">
+    <div class="adhoc-main">
+      <div class="adhoc-table-header">
+        <div class="adhoc-table-title">🧩 Roles &amp; Responsibilities</div>
+        <div class="adhoc-filters">
+          <select class="adhoc-filter-sel" id="rolesMemberFilter" onchange="rolesRender()"><option value="all">All Members</option></select>
+          <button class="adhoc-add-btn" onclick="rolesOpenModal()">+ Add Responsibility</button>
+        </div>
+      </div>
+      <div style="font-size:12px;color:var(--text3);margin:6px 0 16px">Define who owns what work (example: an owner handles website, reviews, and blog).</div>
+      <div class="adhoc-stats" id="rolesStats" style="margin-bottom:16px"></div>
+      <div class="adhoc-table-wrap"><div style="overflow-x:auto"><div id="rolesWrap"></div></div></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ INTERNS (ADMIN) PANEL ═══════════════════ -->
+  <div class="app-tab-panel" id="panelInterns">
+    <div class="adhoc-main">
+      <div class="adhoc-table-header">
+        <div class="adhoc-table-title">🎓 Intern Management</div>
+        <div class="adhoc-filters">
+          <button class="adhoc-add-btn" onclick="adhocOpenModal()">+ Assign Task</button>
+        </div>
+      </div>
+      <div style="font-size:12px;color:var(--text3);margin:6px 0 16px">Interns self-register from the login screen. Assign work via Daily or Adhoc tasks using their name. Progress below updates live.</div>
+      <div class="assignee-progress-grid" id="internAdminGrid" style="margin-bottom:20px"></div>
+      <div id="internAdminDetail"></div>
+    </div>
+  </div>
+
+</div><!-- end app-wrap -->
+
+<!-- ═══════════════════ INTERN DASHBOARD ═══════════════════ -->
+<div id="internWrap" style="display:none">
+  <div class="header">
+    <div class="logo">FlowPilot<span> AI</span> · Intern</div>
+    <div class="header-right">
+      <button class="theme-toggle" id="internThemeBtn" onclick="toggleTheme()">🌙</button>
+      <span class="user-badge" id="internBadge"></span>
+      <button class="logout-btn" onclick="doLogout()">Logout</button>
+    </div>
+  </div>
+  <div style="max-width:880px;margin:0 auto;padding:24px clamp(16px,3vw,32px) 48px">
+    <div style="font-size:20px;font-weight:700;margin-bottom:2px" id="internGreeting">Welcome</div>
+    <div style="font-size:12px;color:var(--text3);margin-bottom:18px" id="internDate"></div>
+    <div class="dt-stats" id="internStats" style="margin-bottom:20px"></div>
+    <div style="font-weight:600;font-size:15px;margin-bottom:10px">📅 My Daily Tasks</div>
+    <div id="internDaily" style="margin-bottom:26px"></div>
+    <div style="font-weight:600;font-size:15px;margin-bottom:10px">🎯 My Assigned Tasks</div>
+    <div id="internAdhoc"></div>
+  </div>
+</div>
+
+<!-- TASK MODALS -->
+<div class="modal-overlay" id="modalOverlay"><div class="modal"><div class="modal-title" id="modalTitle">Add New Task</div><div class="form-row"><label class="form-label">Task *</label><textarea class="form-textarea" id="fTaskName" placeholder="Describe..."></textarea></div><div class="form-row-grid3"><div class="form-row"><label class="form-label">Due</label><input type="date" class="form-input" id="fDueDate"></div><div class="form-row"><label class="form-label">Status</label><select class="form-select" id="fStatus"><option value="Pending">Pending</option><option value="WIP">WIP</option><option value="Done">Done</option><option value="HOLD">HOLD</option></select></div><div class="form-row"><label class="form-label">Priority</label><select class="form-select" id="fPriority"><option value="">None</option><option value="High">High</option><option value="Medium">Medium</option><option value="Low">Low</option></select></div></div><div class="form-row-grid"><div class="form-row"><label class="form-label">Assignee</label><select class="form-select" id="fAssignee"></select></div><div class="form-row"><label class="form-label">Reviewer</label><select class="form-select" id="fReviewer"></select></div></div><div class="form-row-grid"><div class="form-row"><label class="form-label">Section</label><select class="form-select" id="fSection"><option value="pre-launch">Pre Launch</option><option value="sales">Sales Assets</option><option value="masterclass">Masterclass-1</option><option value="one-on-one">One on One</option><option value="batch">Batch Mgmt</option></select></div><div class="form-row"><label class="form-label">Blocked By</label><input class="form-input" id="fBlockedBy" placeholder="e.g. PL-04"></div></div><div class="form-row"><label class="form-label">Notes</label><textarea class="form-textarea" id="fNotes" placeholder="Notes..." style="min-height:40px"></textarea></div><div class="modal-actions"><button class="btn-cancel" onclick="closeModal()">Cancel</button><button class="btn-save" onclick="saveTask()">Save</button></div></div></div>
+<div class="modal-overlay" id="courseModalOverlay"><div class="modal" style="width:380px"><div class="modal-title">Add Course</div><div class="form-row"><label class="form-label">Name *</label><input class="form-input" id="fCourseName" placeholder="e.g. Oracle Exadata"></div><p style="font-size:12px;color:var(--text3);margin-top:8px">Pre-filled template created automatically.</p><div class="modal-actions"><button class="btn-cancel" onclick="closeCourseModal()">Cancel</button><button class="btn-save" onclick="addCourse()">Create</button></div></div></div>
+<div class="modal-overlay" id="teamModalOverlay"><div class="modal" style="width:360px"><div class="modal-title">Add Team Member</div><div class="form-row"><label class="form-label">Name *</label><input class="form-input" id="fMemberName" placeholder="e.g. Rahul"></div><div class="form-row"><label class="form-label">Color</label><input type="color" id="fMemberColor" value="#2563eb" style="width:50px;height:32px;border:1px solid var(--border);border-radius:4px;cursor:pointer"></div><div class="modal-actions"><button class="btn-cancel" onclick="closeTeamModal()">Cancel</button><button class="btn-save" onclick="addMember()">Add</button></div></div></div>
+<div class="modal-overlay" id="removeTeamModalOverlay"><div class="modal" style="width:360px"><div class="modal-title">Remove Team Member</div><div class="form-row"><label class="form-label">Select</label><select class="form-select" id="fRemoveMember"></select></div><p style="font-size:12px;color:var(--text3);margin-top:4px">Name stays on existing tasks.</p><div class="modal-actions"><button class="btn-cancel" onclick="closeRemoveTeamModal()">Cancel</button><button class="btn-save" style="background:var(--red)" onclick="removeMember()">Remove</button></div></div></div>
+
+<!-- INTERN SIGNUP MODAL -->
+<div class="modal-overlay" id="internSignupOverlay"><div class="modal" style="width:380px"><div class="modal-title">Create Intern Account</div>
+  <div class="form-row"><label class="form-label">Full Name *</label><input class="form-input" id="fInternName" placeholder="e.g. Riya Sharma"></div>
+  <div class="form-row"><label class="form-label">Username *</label><input class="form-input" id="fInternUser" placeholder="choose a username"></div>
+  <div class="form-row"><label class="form-label">Password *</label><input class="form-input" id="fInternPass" type="password" placeholder="choose a password"></div>
+  <div class="login-error" id="internSignupError" style="display:none"></div>
+  <div class="modal-actions"><button class="btn-cancel" onclick="closeInternSignup()">Cancel</button><button class="btn-save" onclick="signupIntern()">Create & Login</button></div>
+</div></div>
+
+<!-- TOOL TESTING MODAL -->
+<div class="modal-overlay" id="ttModalOverlay"><div class="modal" style="width:520px">
+  <div class="modal-title" id="ttModalTitle">Add Tool / Research</div>
+  <div class="form-row"><label class="form-label">Tool / Research Name *</label><input class="form-input" id="fTtName" placeholder="e.g. Assista AI"></div>
+  <div class="form-row"><label class="form-label">Description</label><textarea class="form-textarea" id="fTtDesc" placeholder="What does it do? Why are we evaluating it?"></textarea></div>
+  <div class="form-row"><label class="form-label">Source Link (reel / video / site)</label><input class="form-input" id="fTtSource" placeholder="https://... (Instagram reel, YouTube, website)"></div>
+  <div class="form-row-grid">
+    <div class="form-row"><label class="form-label">Found Via (where)</label><input class="form-input" id="fTtFound" placeholder="e.g. Instagram reel, LinkedIn, Google"></div>
+    <div class="form-row"><label class="form-label">Status</label><select class="form-select" id="fTtStatus"><option>Researching</option><option>Testing</option><option>Adopted</option><option>Rejected</option></select></div>
+  </div>
+  <div class="form-row"><label class="form-label">Assigned To (working on it)</label><select class="form-select" id="fTtAssignee"></select></div>
+  <div class="modal-actions"><button class="btn-cancel" onclick="ttClose()">Cancel</button><button class="btn-save" onclick="ttSave()">Save</button></div>
+</div></div>
+<div class="modal-overlay" id="assetModalOverlay"><div class="modal" style="width:420px"><div class="modal-title" id="assetModalTitle">Add Asset Link</div><div class="form-row"><label class="form-label">Name *</label><input class="form-input" id="fAssetName" placeholder="e.g. Materials Folder"></div><div class="form-row"><label class="form-label">URL *</label><input class="form-input" id="fAssetUrl" placeholder="https://drive.google.com/..."></div><div class="form-row"><label class="form-label">Type</label><select class="form-select" id="fAssetType"><option value="gdrive">Google Drive</option><option value="onedrive">OneDrive</option><option value="other">Other</option></select></div><div class="modal-actions"><button class="btn-cancel" onclick="closeAssetModal()">Cancel</button><button class="btn-save" onclick="saveAsset()">Add</button></div></div></div>
+<div class="modal-overlay" id="userMgmtOverlay"><div class="modal" style="width:520px"><div class="modal-title">User Management</div><div id="userList"></div><div style="border-top:1px solid var(--border);padding-top:14px;margin-top:14px"><div class="form-label" style="margin-bottom:8px">Add New User</div><div class="form-row-grid3"><div class="form-row"><label class="form-label">Username *</label><input class="form-input" id="fNewUser" placeholder="username"></div><div class="form-row"><label class="form-label">Password *</label><input class="form-input" id="fNewPass" type="password" placeholder="password"></div><div class="form-row"><label class="form-label">Role</label><select class="form-select" id="fNewRole"><option value="member">Member</option><option value="admin">Admin</option><option value="intern">Intern</option></select></div></div><button class="btn-save" onclick="createUser()" style="margin-top:4px">Create User</button></div><div class="modal-actions"><button class="btn-cancel" onclick="closeUserMgmt()">Close</button></div></div></div>
+
+<!-- MANUAL ENTRY MODAL -->
+<div class="modal-overlay" id="tmManualOverlay">
+  <div class="modal" style="width:420px">
+    <div class="modal-title">Manual Attendance Entry</div>
+    <div class="form-row"><label class="form-label">Team Member</label><select class="form-select" id="tmManualUser"></select></div>
+    <div class="form-row"><label class="form-label">Date</label><input type="date" class="form-input" id="tmManualDate"></div>
+    <div class="form-row-grid">
+      <div class="form-row"><label class="form-label">Clock In</label><input type="time" class="form-input" id="tmManualIn"></div>
+      <div class="form-row"><label class="form-label">Clock Out</label><input type="time" class="form-input" id="tmManualOut"></div>
+    </div>
+    <div class="form-row"><label class="form-label">Break (minutes)</label><input type="number" class="form-input" id="tmManualBreak" value="0" min="0" max="120"></div>
+    <div class="form-row"><label class="form-label">Note</label><input class="form-input" id="tmManualNote" placeholder="e.g. Work from home"></div>
+    <div class="modal-actions"><button class="btn-cancel" onclick="tmCloseManual()">Cancel</button><button class="btn-save" onclick="tmSaveManual()">Save</button></div>
+  </div>
+</div>
+
+<!-- DAILY TASK MODAL -->
+<div class="modal-overlay" id="dtModalOverlay">
+  <div class="modal" style="width:420px">
+    <div class="modal-title" id="dtModalTitle">Add Daily Task</div>
+    <div class="form-row"><label class="form-label">Task Name *</label><input class="form-input" id="fDtName" placeholder="e.g. Review LinkedIn messages"></div>
+    <div class="form-row"><label class="form-label">Notes</label><input class="form-input" id="fDtNote" placeholder="Optional notes..."></div>
+    <div class="form-row"><label class="form-label">Assigned To</label><select class="form-select" id="fDtAssignee"></select></div>
+    <div class="modal-actions"><button class="btn-cancel" onclick="dtCloseModal()">Cancel</button><button class="btn-save" onclick="dtSaveTask()">Save</button></div>
+  </div>
+</div>
+
+<!-- ADHOC TASK MODAL -->
+<div class="modal-overlay" id="adhocModalOverlay">
+  <div class="modal" style="width:500px">
+    <div class="modal-title" id="adhocModalTitle">Add Adhoc Task</div>
+    <div class="form-row"><label class="form-label">Task Name *</label><input class="form-input" id="fAdhocName" placeholder="e.g. Website Landing Page Creation"></div>
+    <div class="form-row"><label class="form-label">Description</label><textarea class="form-textarea" id="fAdhocDesc" placeholder="Describe the task..." style="min-height:60px"></textarea></div>
+    <div class="form-row-grid">
+      <div class="form-row"><label class="form-label">Assigned To *</label><select class="form-select" id="fAdhocAssignee"></select></div>
+      <div class="form-row"><label class="form-label">Priority</label><select class="form-select" id="fAdhocPriority"><option value="Urgent">Urgent</option><option value="High">High</option><option value="Medium" selected>Medium</option><option value="Low">Low</option></select></div>
+    </div>
+    <div class="form-row-grid">
+      <div class="form-row"><label class="form-label">End Date *</label><input type="date" class="form-input" id="fAdhocEndDate"></div>
+      <div class="form-row"><label class="form-label">Progress Status</label><select class="form-select" id="fAdhocProgress"><option value="Pending">Pending</option><option value="In Progress">In Progress</option><option value="Completed">Completed</option><option value="Confusion">Confusion</option></select></div>
+    </div>
+    <div class="modal-actions"><button class="btn-cancel" onclick="adhocCloseModal()">Cancel</button><button class="btn-save" onclick="adhocSaveTask()">Save</button></div>
+  </div>
+</div>
+
+<!-- WEEKLY TASK MODAL -->
+<div class="modal-overlay" id="weeklyModalOverlay">
+  <div class="modal" style="width:520px">
+    <div class="modal-title" id="weeklyModalTitle">Add Weekly Task</div>
+    <div class="form-row"><label class="form-label">Task Name *</label><input class="form-input" id="fWeeklyTitle" placeholder="e.g. Launch blog campaign"></div>
+    <div class="form-row-grid">
+      <div class="form-row"><label class="form-label">Owner</label><select class="form-select" id="fWeeklyOwner"></select></div>
+      <div class="form-row"><label class="form-label">Status</label><select class="form-select" id="fWeeklyStatus"><option>Planned</option><option>In Progress</option><option>Blocked</option><option>Done</option></select></div>
+    </div>
+    <div class="form-row"><label class="form-label">Notes</label><textarea class="form-textarea" id="fWeeklyNotes" placeholder="Expected outcome, blockers, dependencies..." style="min-height:70px"></textarea></div>
+    <div class="modal-actions"><button class="btn-cancel" onclick="weeklyCloseModal()">Cancel</button><button class="btn-save" onclick="weeklySaveTask()">Save</button></div>
+  </div>
+</div>
+
+<!-- SALES FORECAST MODAL -->
+<div class="modal-overlay" id="sfModalOverlay">
+  <div class="modal" style="width:460px">
+    <div class="modal-title">Add Forecast</div>
+    <div class="form-row-grid">
+      <div class="form-row"><label class="form-label">Date *</label><input class="form-input" id="fSfDate" type="date" style="font-family:var(--mono)"></div>
+      <div class="form-row"><label class="form-label">Sales Member *</label><select class="form-select" id="fSfMember"></select></div>
+    </div>
+    <div class="form-row-grid">
+      <div class="form-row"><label class="form-label">Forecast Number *</label><input class="form-input" id="fSfForecast" type="number" min="0" placeholder="e.g. 10"></div>
+      <div class="form-row"><label class="form-label">Notes</label><input class="form-input" id="fSfNote" placeholder="Optional note..."></div>
+    </div>
+    <div class="modal-actions"><button class="btn-cancel" onclick="sfCloseModal()">Cancel</button><button class="btn-save" onclick="sfSaveRow()">Add Forecast</button></div>
+  </div>
+</div>
+
+<!-- ROLES & RESPONSIBILITIES MODAL -->
+<div class="modal-overlay" id="rolesModalOverlay">
+  <div class="modal" style="width:520px">
+    <div class="modal-title" id="rolesModalTitle">Add Responsibility</div>
+    <div class="form-row"><label class="form-label">Team Member *</label><select class="form-select" id="fRolesMember"></select></div>
+    <div class="form-row"><label class="form-label">Responsibilities *</label><textarea class="form-textarea" id="fRolesText" placeholder="e.g. Website pages, Trustpilot reviews, weekly blog publishing..." style="min-height:90px"></textarea></div>
+    <div class="modal-actions"><button class="btn-cancel" onclick="rolesCloseModal()">Cancel</button><button class="btn-save" onclick="rolesSaveItem()">Save</button></div>
+  </div>
+</div>
+
+<!-- AI AGENT -->
+<button class="ai-bubble" id="aiBubble" onclick="aiToggle()" style="display:none" title="Ask FlowPilot AI">
+  🤖<span class="ai-dot"></span>
+</button>
+
+<div class="ai-panel" id="aiPanel">
+  <div class="ai-panel-header">
+    <div class="ai-avatar">🤖</div>
+    <div class="ai-header-text">
+      <div class="ai-header-name">FlowPilot AI</div>
+      <div class="ai-header-sub">Command Center Assistant</div>
+    </div>
+    <button class="ai-close" onclick="aiReset()" title="Reset & Home" style="margin-right:4px">🏠</button>
+    <button class="ai-close" onclick="aiToggle()">✕</button>
+  </div>
+  <div class="ai-memory-strip" id="aiKeyStrip" style="display:none;background:var(--red-bg);border-bottom:1px solid rgba(220,38,38,.2);padding:10px 14px;flex-shrink:0;flex-direction:column;align-items:stretch;gap:8px">
+    <div style="display:flex;align-items:flex-start;gap:10px;width:100%">
+      <span style="font-size:14px;margin-top:6px">🔑</span>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:10px;color:var(--red);font-weight:600;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">Anthropic API Key</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <input type="password" id="aiKeyInput" autocomplete="off" placeholder="sk-ant-api03-..." style="flex:1;min-width:180px;border:1px solid rgba(220,38,38,.3);border-radius:5px;padding:7px 10px;background:var(--surface);font-size:12px;color:var(--text);outline:none;font-family:var(--mono)" onkeydown="if(event.key==='Enter')aiSetKey(this.value)">
+          <button type="button" onclick="aiSetKey(document.getElementById('aiKeyInput').value)" style="padding:7px 12px;border:none;border-radius:5px;background:var(--brand);color:#fff;font-size:11px;font-weight:600;cursor:pointer;font-family:var(--font);white-space:nowrap">Save &amp; Test</button>
+          <button type="button" onclick="aiClearKey()" style="padding:7px 10px;border:1px solid var(--border);border-radius:5px;background:var(--surface);color:var(--text3);font-size:11px;cursor:pointer;font-family:var(--font)">Clear</button>
+        </div>
+        <div id="aiKeyStatus" style="font-size:11px;color:var(--text3);margin-top:6px;line-height:1.4"></div>
+        <div style="font-size:11px;margin-top:4px"><a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener" style="color:var(--brand);font-weight:600;text-decoration:none">→ Create / copy key at console.anthropic.com</a></div>
+      </div>
+    </div>
+  </div>
+  <div class="ai-memory-strip" id="aiMemoryStrip">
+    <span>💾</span><span id="aiMemoryText"></span>
+  </div>
+  <div class="ai-messages" id="aiMessages"></div>
+  <div class="ai-chips" id="aiChips">
+    <span class="ai-chip" onclick="aiAsk('What should I focus on today?')">🎯 My focus today</span>
+    <span class="ai-chip" onclick="aiAsk('What tasks are overdue?')">⚠️ Overdue tasks</span>
+    <span class="ai-chip" onclick="aiAsk('Summarise team progress')">📊 Team summary</span>
+    <span class="ai-chip" onclick="aiAsk('Who has the most pending tasks?')">👥 Who is busiest?</span>
+    <span class="ai-chip" onclick="aiAsk('What did I work on last time?')">🕐 Last session</span>
+  </div>
+  <div class="ai-input-row">
+    <input class="ai-input" id="aiInput" placeholder="Ask anything about your tasks..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();aiSend()}">
+    <button class="ai-send" id="aiSendBtn" onclick="aiSend()">➤</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="cmd-palette" id="cmdPalette" onclick="if(event.target===this)closeCmdPalette()">
+<div class="cmd-box" onclick="event.stopPropagation()">
+<input class="cmd-input" id="cmdInput" placeholder="Jump to module (Ctrl+K)…" oninput="cmdFilter(this.value)" onkeydown="cmdInputKey(event)">
+<div class="cmd-list" id="cmdList">
+<div class="cmd-item" data-label="tasks tasks" onclick="runCmd('tasks')">📋 Tasks</div>
+<div class="cmd-item" data-label="time attendance clock" onclick="runCmd('time')">⏱ Time</div>
+<div class="cmd-item" data-label="daily tasks" onclick="runCmd('daily')">📅 Daily</div>
+<div class="cmd-item" data-label="adhoc tasks" onclick="runCmd('adhoc')">🎯 Adhoc</div>
+<div class="cmd-item" data-label="weekly tasks" onclick="runCmd('weekly')">🗓 Weekly Tasks</div>
+<div class="cmd-item" data-label="roles responsibilities" onclick="runCmd('roles')">🧩 Roles & Responsibilities</div>
+<div class="cmd-item" data-label="tools testing research" onclick="runCmd('tools')">🧪 Tool Testing</div>
+<div class="cmd-item" data-label="sales forecast numbers" onclick="runCmd('salesfc')">📈 Sales Forecast</div>
+<div class="cmd-item" data-admin="1" data-label="interns" onclick="runCmd('interns')">🎓 Interns</div>
+<div class="cmd-item" data-label="add task course" onclick="runCmd('add')">➕ Add task to course</div>
+<div class="cmd-item" data-label="pre launch section" onclick="runCmd('sec-pre')">📂 Pre Launch section</div>
+<div class="cmd-item" data-label="sales assets section" onclick="runCmd('sec-sales')">📂 Sales Assets section</div>
+<div class="cmd-item" data-label="ai assistant" onclick="runCmd('ai')">🤖 AI assistant</div>
+<div class="cmd-item" data-label="export csv excel" onclick="runCmd('export')">📥 Export CSV</div>
+<div class="cmd-item" data-label="theme dark light" onclick="runCmd('theme')">🌙 Theme</div>
+<div class="cmd-empty" id="cmdEmpty" style="display:none">No matches</div>
+</div>
+<div class="cmd-hint">Ctrl+K · ↑↓ to navigate · Enter to open · Esc to close</div>
+</div>
+</div>
+
+<script type="module" src="/src/main.js"></script>
+</body>
+</html>
