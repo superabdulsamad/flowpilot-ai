@@ -48,7 +48,7 @@
           </div>
         </div>
         <div id="internBox" style="display:none">
-          <div class="intern-portal-label">🎓 Intern Portal</div>
+          <div class="intern-portal-label"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 9 12 4.5 21.5 9 12 13.5 2.5 9Z"/><path d="M6.5 11v4.7c0 1.6 2.6 3 5.5 3s5.5-1.4 5.5-3V11"/></svg> Intern Portal</div>
           <input class="login-input" id="internLoginUser" placeholder="Intern Username" onkeydown="if(event.key==='Enter')internDoLogin()">
           <input class="login-input" id="internLoginPass" type="password" placeholder="Password" onkeydown="if(event.key==='Enter')internDoLogin()">
           <button class="login-btn" id="internLoginBtn" style="background:var(--purple)" onclick="internDoLogin()">Intern Sign In</button>
@@ -67,7 +67,7 @@
     <div class="header-left">
       <div class="logo">FlowPilot<span> AI</span></div>
       <div class="header-toolbar" id="headerToolbar">
-        <button type="button" class="header-tool-btn" id="sidebarToggleBtn" onclick="toggleSidebar()" title="Toggle sections sidebar">☰ Sections</button>
+        <button type="button" class="header-tool-btn" id="sidebarToggleBtn" onclick="toggleSidebar()" title="Toggle sections sidebar"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg> Sections</button>
         <button type="button" class="header-tool-btn" onclick="openCmdPalette()" title="Jump to module (Ctrl+K)"><span class="header-tool-kbd">⌘K</span> Jump</button>
       </div>
     </div>
@@ -79,8 +79,8 @@
         <button class="cs-btn danger admin-only" onclick="deleteCourse()">✕</button>
       </div>
       <button class="add-task-btn" id="addTaskBtn" onclick="openAddTask()">+ Add Task</button>
-      <button class="cs-btn admin-only" onclick="openUserMgmt()">👥 Users</button>
-      <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()">🌙</button>
+      <button class="cs-btn admin-only" onclick="openUserMgmt()"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3.2 20c0-3.3 2.6-5.5 5.8-5.5s5.8 2.2 5.8 5.5"/><circle cx="17" cy="9" r="2.3"/><path d="M15.3 20c.3-2.2 1.9-3.9 4.5-4.2"/></svg> Users</button>
+      <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.2A8.2 8.2 0 1 1 9.8 4a6.8 6.8 0 0 0 10.2 10.2Z"/></svg></button>
       <span class="user-badge" id="userBadge"></span>
       <button class="logout-btn" onclick="doLogout()">Logout</button>
     </div>
@@ -88,15 +88,15 @@
 
   <!-- APP LEVEL TABS -->
   <div class="app-tabs">
-    <button class="app-tab active" id="appTabTasks" onclick="switchAppTab('tasks')">📋 Tasks <span class="tab-badge" id="badgeTasks"></span></button>
-    <button class="app-tab" id="appTabTime" onclick="switchAppTab('time')">⏱ Time</button>
-    <button class="app-tab" id="appTabDaily" onclick="switchAppTab('daily')">📅 Daily <span class="tab-badge" id="badgeDaily"></span></button>
-    <button class="app-tab" id="appTabAdhoc" onclick="switchAppTab('adhoc')">🎯 Adhoc <span class="tab-badge" id="badgeAdhoc"></span></button>
-    <button class="app-tab" id="appTabWeekly" onclick="switchAppTab('weekly')">🗓 Weekly Tasks</button>
-    <button class="app-tab" id="appTabRoles" onclick="switchAppTab('roles')">🧩 Roles &amp; Responsibilities</button>
-    <button class="app-tab" id="appTabTools" onclick="switchAppTab('tools')">🧪 Tool Testing</button>
-    <button class="app-tab admin-only" id="appTabInterns" onclick="switchAppTab('interns')">🎓 Interns</button>
-    <button class="app-tab" id="appTabSales" onclick="switchAppTab('sales')">📈 Sales Forecast</button>
+    <button class="app-tab active" id="appTabTasks" onclick="switchAppTab('tasks')"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="3.5" height="3.5"/><rect x="3" y="10.25" width="3.5" height="3.5"/><rect x="3" y="16.5" width="3.5" height="3.5"/><line x1="9.5" y1="5.75" x2="21" y2="5.75"/><line x1="9.5" y1="12" x2="21" y2="12"/><line x1="9.5" y1="18.25" x2="21" y2="18.25"/></svg> Tasks <span class="tab-badge" id="badgeTasks"></span></button>
+    <button class="app-tab" id="appTabTime" onclick="switchAppTab('time')"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3.5 2"/></svg> Time</button>
+    <button class="app-tab" id="appTabDaily" onclick="switchAppTab('daily')"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="15" rx="1.5"/><line x1="3" y1="9.5" x2="21" y2="9.5"/><line x1="7.5" y1="3" x2="7.5" y2="7"/><line x1="16.5" y1="3" x2="16.5" y2="7"/></svg> Daily <span class="tab-badge" id="badgeDaily"></span></button>
+    <button class="app-tab" id="appTabAdhoc" onclick="switchAppTab('adhoc')"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.2"/></svg> Adhoc <span class="tab-badge" id="badgeAdhoc"></span></button>
+    <button class="app-tab" id="appTabWeekly" onclick="switchAppTab('weekly')"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="15" rx="1.5"/><line x1="3" y1="9.5" x2="21" y2="9.5"/><line x1="7.5" y1="3" x2="7.5" y2="7"/><line x1="16.5" y1="3" x2="16.5" y2="7"/></svg> Weekly Tasks</button>
+    <button class="app-tab" id="appTabRoles" onclick="switchAppTab('roles')"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5 20.5 8 12 12.5 3.5 8Z"/><path d="M3.5 14 12 18.5 20.5 14"/></svg> Roles &amp; Responsibilities</button>
+    <button class="app-tab" id="appTabTools" onclick="switchAppTab('tools')"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 3h5"/><path d="M10.25 3v6.2l-5.4 9.1c-.6 1 .1 2.2 1.3 2.2h11.7c1.2 0 1.9-1.2 1.3-2.2l-5.4-9.1V3"/><line x1="8" y1="15" x2="16" y2="15"/></svg> Tool Testing</button>
+    <button class="app-tab admin-only" id="appTabInterns" onclick="switchAppTab('interns')"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 9 12 4.5 21.5 9 12 13.5 2.5 9Z"/><path d="M6.5 11v4.7c0 1.6 2.6 3 5.5 3s5.5-1.4 5.5-3V11"/></svg> Interns</button>
+    <button class="app-tab" id="appTabSales" onclick="switchAppTab('sales')"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3,17 9.5,10.5 13,14 21,6"/><polyline points="15,6 21,6 21,12"/></svg> Sales Forecast</button>
   </div>
 
   <!-- ═══════════════════ TASK MANAGEMENT PANEL ═══════════════════ -->
@@ -127,7 +127,7 @@
           <select class="filter-select" id="statusFilter" onchange="applyFilters()"><option value="all">All Statuses</option><option value="Done">Done</option><option value="WIP">WIP</option><option value="Pending">Pending</option><option value="HOLD">Hold</option></select>
           <select class="filter-select" id="assigneeFilter" onchange="applyFilters()"><option value="all">All Assignees</option></select>
           <select class="filter-select" id="priorityFilter" onchange="applyFilters()"><option value="all">All Priorities</option><option value="High">High</option><option value="Medium">Medium</option><option value="Low">Low</option></select>
-          <button class="export-btn" onclick="exportExcel()">📥 Export</button>
+          <button class="export-btn" onclick="exportExcel()"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12.5"/><polyline points="7,11.5 12,16.5 17,11.5"/><path d="M4 19.5h16"/></svg> Export</button>
           <div class="view-toggle">
             <button class="view-btn active" id="btnTable" onclick="setView('table')">List</button>
             <button class="view-btn" id="btnKanban" onclick="setView('kanban')">Board</button>
@@ -157,7 +157,7 @@
           <div class="clock-actions">
             <button class="btn-clockin" id="btnClockIn" onclick="tmClockIn()">▶ Clock In</button>
             <button class="btn-clockout" id="btnClockOut" onclick="tmClockOut()" style="display:none">■ Clock Out</button>
-            <button class="btn-break" id="btnBreak" onclick="tmToggleBreak()" style="display:none">☕ Break</button>
+            <button class="btn-break" id="btnBreak" onclick="tmToggleBreak()" style="display:none"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9h13v6a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4Z"/><path d="M17 10.5h1.5a2.3 2.3 0 0 1 0 4.6H17"/><path d="M8 5.5c0-1 .8-1 .8-2s-.8-1-.8-2"/><path d="M12 5.5c0-1 .8-1 .8-2s-.8-1-.8-2"/></svg> Break</button>
           </div>
         </div>
         <div class="tm-status-panel">
@@ -179,9 +179,9 @@
 
       <!-- TM INNER TABS -->
       <div class="tm-tabs">
-        <button class="tm-tab active" onclick="setTmTab('team',this)">👥 Team View</button>
-        <button class="tm-tab" onclick="setTmTab('history',this)">📅 My History</button>
-        <button class="tm-tab admin-only" id="tmAdminTab" onclick="setTmTab('admin',this)">⚙️ Admin</button>
+        <button class="tm-tab active" onclick="setTmTab('team',this)"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3.2 20c0-3.3 2.6-5.5 5.8-5.5s5.8 2.2 5.8 5.5"/><circle cx="17" cy="9" r="2.3"/><path d="M15.3 20c.3-2.2 1.9-3.9 4.5-4.2"/></svg> Team View</button>
+        <button class="tm-tab" onclick="setTmTab('history',this)"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="15" rx="1.5"/><line x1="3" y1="9.5" x2="21" y2="9.5"/><line x1="7.5" y1="3" x2="7.5" y2="7"/><line x1="16.5" y1="3" x2="16.5" y2="7"/></svg> My History</button>
+        <button class="tm-tab admin-only" id="tmAdminTab" onclick="setTmTab('admin',this)"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 3.5v3M12 17.5v3M3.5 12h3M17.5 12h3M6 6l2.1 2.1M15.9 15.9 18 18M18 6l-2.1 2.1M8.1 15.9 6 18"/></svg> Admin</button>
       </div>
 
       <!-- TEAM VIEW -->
@@ -198,7 +198,7 @@
                 <option value="30" selected>Last 30 days</option>
                 <option value="90">Last 90 days</option>
               </select>
-              <button class="export-btn" onclick="tmExportMy()">📥 Export</button>
+              <button class="export-btn" onclick="tmExportMy()"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12.5"/><polyline points="7,11.5 12,16.5 17,11.5"/><path d="M4 19.5h16"/></svg> Export</button>
             </div>
           </div>
           <div id="tmHistoryBody"></div>
@@ -212,7 +212,7 @@
           <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">
             <select class="att-filter-sel" id="tmAdminMember" onchange="tmRenderAdmin()"><option value="all">All Members</option></select>
             <select class="att-filter-sel" id="tmAdminDays" onchange="tmRenderAdmin()"><option value="7">Last 7 days</option><option value="30" selected>Last 30 days</option></select>
-            <button class="export-btn" onclick="tmExportAll()">📥 Export All</button>
+            <button class="export-btn" onclick="tmExportAll()"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12.5"/><polyline points="7,11.5 12,16.5 17,11.5"/><path d="M4 19.5h16"/></svg> Export All</button>
             <button class="export-btn" style="border-color:var(--brand);color:var(--brand)" onclick="tmOpenManual()">+ Manual Entry</button>
           </div>
           <div id="tmAdminBody"></div>
@@ -226,7 +226,7 @@
   <div class="app-tab-panel" id="panelDaily">
     <div class="dt-main">
       <div class="dt-header-row">
-        <div class="dt-title">📅 Daily Tasks</div>
+        <div class="dt-title"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="15" rx="1.5"/><line x1="3" y1="9.5" x2="21" y2="9.5"/><line x1="7.5" y1="3" x2="7.5" y2="7"/><line x1="16.5" y1="3" x2="16.5" y2="7"/></svg> Daily Tasks</div>
         <div class="dt-date" id="dtDateDisplay"></div>
         <button class="adhoc-add-btn" onclick="dtOpenModal()">+ Add Daily Task</button>
       </div>
@@ -256,7 +256,7 @@
             <select class="adhoc-filter-sel" id="adhocAssigneeFilter" onchange="adhocRender()"><option value="all">All Assignees</option></select>
             <select class="adhoc-filter-sel" id="adhocPriorityFilter" onchange="adhocRender()"><option value="all">All Priorities</option><option value="Urgent">Urgent</option><option value="High">High</option><option value="Medium">Medium</option><option value="Low">Low</option></select>
             <select class="adhoc-filter-sel" id="adhocStatusFilter" onchange="adhocRender()"><option value="all">All Progress</option><option value="Pending">Pending</option><option value="In Progress">In Progress</option><option value="Completed">Completed</option><option value="Confusion">Confusion</option></select>
-            <button class="export-btn" onclick="adhocExport()">📥 Export</button>
+            <button class="export-btn" onclick="adhocExport()"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12.5"/><polyline points="7,11.5 12,16.5 17,11.5"/><path d="M4 19.5h16"/></svg> Export</button>
             <button class="adhoc-add-btn" onclick="adhocOpenModal()">+ Add New Adhoc Task</button>
           </div>
         </div>
@@ -288,7 +288,7 @@
   <div class="app-tab-panel" id="panelTools">
     <div class="adhoc-main">
       <div class="adhoc-table-header">
-        <div class="adhoc-table-title">🧪 Tool Testing &amp; Research</div>
+        <div class="adhoc-table-title"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 3h5"/><path d="M10.25 3v6.2l-5.4 9.1c-.6 1 .1 2.2 1.3 2.2h11.7c1.2 0 1.9-1.2 1.3-2.2l-5.4-9.1V3"/><line x1="8" y1="15" x2="16" y2="15"/></svg> Tool Testing &amp; Research</div>
         <div class="adhoc-filters">
           <select class="adhoc-filter-sel" id="ttStatusFilter" onchange="ttRender()"><option value="all">All Status</option><option>Researching</option><option>Testing</option><option>Adopted</option><option>Rejected</option></select>
           <select class="adhoc-filter-sel" id="ttAssigneeFilter" onchange="ttRender()"><option value="all">All Assignees</option></select>
@@ -305,7 +305,7 @@
   <div class="app-tab-panel" id="panelSales">
     <div class="adhoc-main">
       <div class="adhoc-table-header">
-        <div class="adhoc-table-title">📈 Sales Forecast — <span id="sfDateLabel"></span></div>
+        <div class="adhoc-table-title"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3,17 9.5,10.5 13,14 21,6"/><polyline points="15,6 21,6 21,12"/></svg> Sales Forecast — <span id="sfDateLabel"></span></div>
         <div class="adhoc-filters">
           <button onclick="sfNavMonth(-1)" title="Previous month" style="border:1px solid var(--border);background:var(--surface2);border-radius:6px;cursor:pointer;padding:6px 11px;color:var(--text);font-size:12px">◀</button>
           <input type="month" class="adhoc-filter-sel" id="sfMonthPick" onchange="sfChangeMonth(this.value)" style="font-family:var(--mono)">
@@ -325,7 +325,7 @@
   <div class="app-tab-panel" id="panelWeekly">
     <div class="adhoc-main">
       <div class="adhoc-table-header">
-        <div class="adhoc-table-title">🗓 Weekly Tasks</div>
+        <div class="adhoc-table-title"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="15" rx="1.5"/><line x1="3" y1="9.5" x2="21" y2="9.5"/><line x1="7.5" y1="3" x2="7.5" y2="7"/><line x1="16.5" y1="3" x2="16.5" y2="7"/></svg> Weekly Tasks</div>
         <div class="adhoc-filters">
           <select class="adhoc-filter-sel" id="weeklyOwnerFilter" onchange="weeklyRender()"><option value="all">All Owners</option></select>
           <select class="adhoc-filter-sel" id="weeklyStatusFilter" onchange="weeklyRender()"><option value="all">All Status</option><option>Planned</option><option>In Progress</option><option>Blocked</option><option>Done</option></select>
@@ -342,7 +342,7 @@
   <div class="app-tab-panel" id="panelRoles">
     <div class="adhoc-main">
       <div class="adhoc-table-header">
-        <div class="adhoc-table-title">🧩 Roles &amp; Responsibilities</div>
+        <div class="adhoc-table-title"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5 20.5 8 12 12.5 3.5 8Z"/><path d="M3.5 14 12 18.5 20.5 14"/></svg> Roles &amp; Responsibilities</div>
         <div class="adhoc-filters">
           <select class="adhoc-filter-sel" id="rolesMemberFilter" onchange="rolesRender()"><option value="all">All Members</option></select>
           <button class="adhoc-add-btn" onclick="rolesOpenModal()">+ Add Responsibility</button>
@@ -358,7 +358,7 @@
   <div class="app-tab-panel" id="panelInterns">
     <div class="adhoc-main">
       <div class="adhoc-table-header">
-        <div class="adhoc-table-title">🎓 Intern Management</div>
+        <div class="adhoc-table-title"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 9 12 4.5 21.5 9 12 13.5 2.5 9Z"/><path d="M6.5 11v4.7c0 1.6 2.6 3 5.5 3s5.5-1.4 5.5-3V11"/></svg> Intern Management</div>
         <div class="adhoc-filters">
           <button class="adhoc-add-btn" onclick="adhocOpenModal()">+ Assign Task</button>
         </div>
@@ -376,7 +376,7 @@
   <div class="header">
     <div class="logo">FlowPilot<span> AI</span> · Intern</div>
     <div class="header-right">
-      <button class="theme-toggle" id="internThemeBtn" onclick="toggleTheme()">🌙</button>
+      <button class="theme-toggle" id="internThemeBtn" onclick="toggleTheme()"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.2A8.2 8.2 0 1 1 9.8 4a6.8 6.8 0 0 0 10.2 10.2Z"/></svg></button>
       <span class="user-badge" id="internBadge"></span>
       <button class="logout-btn" onclick="doLogout()">Logout</button>
     </div>
@@ -385,9 +385,9 @@
     <div style="font-size:20px;font-weight:700;margin-bottom:2px" id="internGreeting">Welcome</div>
     <div style="font-size:12px;color:var(--text3);margin-bottom:18px" id="internDate"></div>
     <div class="dt-stats" id="internStats" style="margin-bottom:20px"></div>
-    <div style="font-weight:600;font-size:15px;margin-bottom:10px">📅 My Daily Tasks</div>
+    <div style="font-weight:600;font-size:15px;margin-bottom:10px"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="15" rx="1.5"/><line x1="3" y1="9.5" x2="21" y2="9.5"/><line x1="7.5" y1="3" x2="7.5" y2="7"/><line x1="16.5" y1="3" x2="16.5" y2="7"/></svg> My Daily Tasks</div>
     <div id="internDaily" style="margin-bottom:26px"></div>
-    <div style="font-weight:600;font-size:15px;margin-bottom:10px">🎯 My Assigned Tasks</div>
+    <div style="font-weight:600;font-size:15px;margin-bottom:10px"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.2"/></svg> My Assigned Tasks</div>
     <div id="internAdhoc"></div>
   </div>
 </div>
@@ -510,22 +510,22 @@
 
 <!-- AI AGENT -->
 <button class="ai-bubble" id="aiBubble" onclick="aiToggle()" style="display:none" title="Ask FlowPilot AI">
-  🤖<span class="ai-dot"></span>
+  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="8.5" width="16" height="11" rx="2"/><circle cx="9" cy="14" r="1.3"/><circle cx="15" cy="14" r="1.3"/><line x1="12" y1="8.5" x2="12" y2="4.5"/><circle cx="12" cy="3.3" r="1.1"/></svg><span class="ai-dot"></span>
 </button>
 
 <div class="ai-panel" id="aiPanel">
   <div class="ai-panel-header">
-    <div class="ai-avatar">🤖</div>
+    <div class="ai-avatar"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="8.5" width="16" height="11" rx="2"/><circle cx="9" cy="14" r="1.3"/><circle cx="15" cy="14" r="1.3"/><line x1="12" y1="8.5" x2="12" y2="4.5"/><circle cx="12" cy="3.3" r="1.1"/></svg></div>
     <div class="ai-header-text">
       <div class="ai-header-name">FlowPilot AI</div>
       <div class="ai-header-sub">Command Center Assistant</div>
     </div>
-    <button class="ai-close" onclick="aiReset()" title="Reset & Home" style="margin-right:4px">🏠</button>
+    <button class="ai-close" onclick="aiReset()" title="Reset & Home" style="margin-right:4px"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11.5 12 4.5 20 11.5"/><path d="M6 10.3V19h12v-8.7"/></svg></button>
     <button class="ai-close" onclick="aiToggle()">✕</button>
   </div>
   <div class="ai-memory-strip" id="aiKeyStrip" style="display:none;background:var(--red-bg);border-bottom:1px solid rgba(220,38,38,.2);padding:10px 14px;flex-shrink:0;flex-direction:column;align-items:stretch;gap:8px">
     <div style="display:flex;align-items:flex-start;gap:10px;width:100%">
-      <span style="font-size:14px;margin-top:6px">🔑</span>
+      <span style="margin-top:2px"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="7.2" cy="14.2" r="3.7"/><path d="M10.4 11 19.5 1.9"/><path d="M15.5 5.9l2.6 2.6"/><path d="M12.9 8.5l2.4 2.4"/></svg></span>
       <div style="flex:1;min-width:0">
         <div style="font-size:10px;color:var(--red);font-weight:600;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">Anthropic API Key</div>
         <div style="display:flex;gap:6px;flex-wrap:wrap">
@@ -539,15 +539,15 @@
     </div>
   </div>
   <div class="ai-memory-strip" id="aiMemoryStrip">
-    <span>💾</span><span id="aiMemoryText"></span>
+    <span><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="1.5"/><path d="M8 4v5h8V4"/><rect x="8.5" y="14" width="7" height="4"/></svg></span><span id="aiMemoryText"></span>
   </div>
   <div class="ai-messages" id="aiMessages"></div>
   <div class="ai-chips" id="aiChips">
-    <span class="ai-chip" onclick="aiAsk('What should I focus on today?')">🎯 My focus today</span>
-    <span class="ai-chip" onclick="aiAsk('What tasks are overdue?')">⚠️ Overdue tasks</span>
-    <span class="ai-chip" onclick="aiAsk('Summarise team progress')">📊 Team summary</span>
-    <span class="ai-chip" onclick="aiAsk('Who has the most pending tasks?')">👥 Who is busiest?</span>
-    <span class="ai-chip" onclick="aiAsk('What did I work on last time?')">🕐 Last session</span>
+    <span class="ai-chip" onclick="aiAsk('What should I focus on today?')"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.2"/></svg> My focus today</span>
+    <span class="ai-chip" onclick="aiAsk('What tasks are overdue?')"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4 21 19H3Z"/><line x1="12" y1="10" x2="12" y2="14.5"/><circle cx="12" cy="17" r="0.6" fill="currentColor"/></svg> Overdue tasks</span>
+    <span class="ai-chip" onclick="aiAsk('Summarise team progress')"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="20" x2="5" y2="12"/><line x1="12" y1="20" x2="12" y2="7"/><line x1="19" y1="20" x2="19" y2="15"/></svg> Team summary</span>
+    <span class="ai-chip" onclick="aiAsk('Who has the most pending tasks?')"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3.2 20c0-3.3 2.6-5.5 5.8-5.5s5.8 2.2 5.8 5.5"/><circle cx="17" cy="9" r="2.3"/><path d="M15.3 20c.3-2.2 1.9-3.9 4.5-4.2"/></svg> Who is busiest?</span>
+    <span class="ai-chip" onclick="aiAsk('What did I work on last time?')"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3.5 2"/></svg> Last session</span>
   </div>
   <div class="ai-input-row">
     <input class="ai-input" id="aiInput" placeholder="Ask anything about your tasks..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();aiSend()}">
@@ -561,21 +561,21 @@
 <div class="cmd-box" onclick="event.stopPropagation()">
 <input class="cmd-input" id="cmdInput" placeholder="Jump to module (Ctrl+K)…" oninput="cmdFilter(this.value)" onkeydown="cmdInputKey(event)">
 <div class="cmd-list" id="cmdList">
-<div class="cmd-item" data-label="tasks tasks" onclick="runCmd('tasks')">📋 Tasks</div>
-<div class="cmd-item" data-label="time attendance clock" onclick="runCmd('time')">⏱ Time</div>
-<div class="cmd-item" data-label="daily tasks" onclick="runCmd('daily')">📅 Daily</div>
-<div class="cmd-item" data-label="adhoc tasks" onclick="runCmd('adhoc')">🎯 Adhoc</div>
-<div class="cmd-item" data-label="weekly tasks" onclick="runCmd('weekly')">🗓 Weekly Tasks</div>
-<div class="cmd-item" data-label="roles responsibilities" onclick="runCmd('roles')">🧩 Roles & Responsibilities</div>
-<div class="cmd-item" data-label="tools testing research" onclick="runCmd('tools')">🧪 Tool Testing</div>
-<div class="cmd-item" data-label="sales forecast numbers" onclick="runCmd('salesfc')">📈 Sales Forecast</div>
-<div class="cmd-item" data-admin="1" data-label="interns" onclick="runCmd('interns')">🎓 Interns</div>
+<div class="cmd-item" data-label="tasks tasks" onclick="runCmd('tasks')"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="3.5" height="3.5"/><rect x="3" y="10.25" width="3.5" height="3.5"/><rect x="3" y="16.5" width="3.5" height="3.5"/><line x1="9.5" y1="5.75" x2="21" y2="5.75"/><line x1="9.5" y1="12" x2="21" y2="12"/><line x1="9.5" y1="18.25" x2="21" y2="18.25"/></svg> Tasks</div>
+<div class="cmd-item" data-label="time attendance clock" onclick="runCmd('time')"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3.5 2"/></svg> Time</div>
+<div class="cmd-item" data-label="daily tasks" onclick="runCmd('daily')"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="15" rx="1.5"/><line x1="3" y1="9.5" x2="21" y2="9.5"/><line x1="7.5" y1="3" x2="7.5" y2="7"/><line x1="16.5" y1="3" x2="16.5" y2="7"/></svg> Daily</div>
+<div class="cmd-item" data-label="adhoc tasks" onclick="runCmd('adhoc')"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.2"/></svg> Adhoc</div>
+<div class="cmd-item" data-label="weekly tasks" onclick="runCmd('weekly')"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="15" rx="1.5"/><line x1="3" y1="9.5" x2="21" y2="9.5"/><line x1="7.5" y1="3" x2="7.5" y2="7"/><line x1="16.5" y1="3" x2="16.5" y2="7"/></svg> Weekly Tasks</div>
+<div class="cmd-item" data-label="roles responsibilities" onclick="runCmd('roles')"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5 20.5 8 12 12.5 3.5 8Z"/><path d="M3.5 14 12 18.5 20.5 14"/></svg> Roles & Responsibilities</div>
+<div class="cmd-item" data-label="tools testing research" onclick="runCmd('tools')"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 3h5"/><path d="M10.25 3v6.2l-5.4 9.1c-.6 1 .1 2.2 1.3 2.2h11.7c1.2 0 1.9-1.2 1.3-2.2l-5.4-9.1V3"/><line x1="8" y1="15" x2="16" y2="15"/></svg> Tool Testing</div>
+<div class="cmd-item" data-label="sales forecast numbers" onclick="runCmd('salesfc')"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3,17 9.5,10.5 13,14 21,6"/><polyline points="15,6 21,6 21,12"/></svg> Sales Forecast</div>
+<div class="cmd-item" data-admin="1" data-label="interns" onclick="runCmd('interns')"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 9 12 4.5 21.5 9 12 13.5 2.5 9Z"/><path d="M6.5 11v4.7c0 1.6 2.6 3 5.5 3s5.5-1.4 5.5-3V11"/></svg> Interns</div>
 <div class="cmd-item" data-label="add task course" onclick="runCmd('add')">➕ Add task to course</div>
-<div class="cmd-item" data-label="pre launch section" onclick="runCmd('sec-pre')">📂 Pre Launch section</div>
-<div class="cmd-item" data-label="sales assets section" onclick="runCmd('sec-sales')">📂 Sales Assets section</div>
-<div class="cmd-item" data-label="ai assistant" onclick="runCmd('ai')">🤖 AI assistant</div>
-<div class="cmd-item" data-label="export csv excel" onclick="runCmd('export')">📥 Export CSV</div>
-<div class="cmd-item" data-label="theme dark light" onclick="runCmd('theme')">🌙 Theme</div>
+<div class="cmd-item" data-label="pre launch section" onclick="runCmd('sec-pre')"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7.2a2 2 0 0 1 2-2h3.8l2 2H19a2 2 0 0 1 2 2v7.6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7.2Z"/></svg> Pre Launch section</div>
+<div class="cmd-item" data-label="sales assets section" onclick="runCmd('sec-sales')"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7.2a2 2 0 0 1 2-2h3.8l2 2H19a2 2 0 0 1 2 2v7.6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7.2Z"/></svg> Sales Assets section</div>
+<div class="cmd-item" data-label="ai assistant" onclick="runCmd('ai')"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="8.5" width="16" height="11" rx="2"/><circle cx="9" cy="14" r="1.3"/><circle cx="15" cy="14" r="1.3"/><line x1="12" y1="8.5" x2="12" y2="4.5"/><circle cx="12" cy="3.3" r="1.1"/></svg> AI assistant</div>
+<div class="cmd-item" data-label="export csv excel" onclick="runCmd('export')"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12.5"/><polyline points="7,11.5 12,16.5 17,11.5"/><path d="M4 19.5h16"/></svg> Export CSV</div>
+<div class="cmd-item" data-label="theme dark light" onclick="runCmd('theme')"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.2A8.2 8.2 0 1 1 9.8 4a6.8 6.8 0 0 0 10.2 10.2Z"/></svg> Theme</div>
 <div class="cmd-empty" id="cmdEmpty" style="display:none">No matches</div>
 </div>
 <div class="cmd-hint">Ctrl+K · ↑↓ to navigate · Enter to open · Esc to close</div>
